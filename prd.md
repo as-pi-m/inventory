@@ -65,44 +65,32 @@ Kryteria akceptacji:
 - Produkt ma unikalne SKU (walidacja).
 
 ID: US-INV-002
+Tytuł: Dodanie obsługi logowania
+Opis: Jako użytkownik chcę mieć możliwość bezpiecznego logowania do systemu, aby chronić dane magazynowe.
+Kryteria akceptacji:
+- Dostęp do swojego profilu po podaniu poprawnych danych uwierzytelniających.
+- Logowanie do systemu
+
+ID: US-INV-003
 Tytuł: Zarejestrowanie przyjęcia towaru
 Opis: Jako magazynier chcę zarejestrować przyjęcie określonej ilości produktu, aby zaktualizować stany magazynowe.
 Kryteria akceptacji:
 - Można wybrać produkt, lokalizację i wprowadzić ilość oraz źródło przyjęcia.
 - System aktualizuje stan i zapisuje wpis w historii operacji z autorem i timestampem.
 
-ID: US-INV-003
+ID: US-INV-004
 Tytuł: Wykonanie korekty stanu (inwentaryzacja)
 Opis: Jako magazynier chcę wprowadzić korektę ilości z powodem, aby zsynchronizować stan magazynu z fizycznym.
 Kryteria akceptacji:
 - Korekta wymaga podania powodu i autora.
 - Historia korekty jest zapisana i widoczna w historii produktu.
 
-ID: US-INV-004
+ID: US-INV-005
 Tytuł: Alert niskiego stanu
 Opis: Jako manager chcę otrzymywać listę produktów poniżej minimalnego poziomu, aby móc zamówić brakujące zapasy.
 Kryteria akceptacji:
 - System generuje widok/filtr produktów z ilością poniżej progu.
 - Możliwość eksportu listy do CSV.
-
-ID: US-INV-005
-Tytuł: Transfer między lokalizacjami
-Opis: Jako magazynier chcę przenieść część zapasu między lokalizacjami, aby aktualizować rozlokowanie produktów.
-Kryteria akceptacji:
-- Transfer tworzy parę operacji (wyjęcie z jednej lokalizacji, przyjęcie do drugiej) i zapisuje je w historii.
-
-ID: US-INV-006
-Tytuł: Import produktów z CSV
-Opis: Jako administrator chcę zaimportować listę produktów ze scv, aby szybko zainicjować bazę produktów.
-Kryteria akceptacji:
-- System waliduje kolumny i zgłasza błędy dla wierszy niekompletnych.
-- Po imporcie produkty są widoczne i dostępne do ruchów.
-
-ID: US-INV-007
-Tytuł: Przegląd historii ruchów produktu
-Opis: Jako audytor chcę zobaczyć pełną historię zmian stanu konkretnego produktu, aby prześledzić operacje.
-Kryteria akceptacji:
-- Widok historii zawiera typ operacji, ilość, autor, timestamp i powód.
 
 ## 6. Metryki sukcesu
 
