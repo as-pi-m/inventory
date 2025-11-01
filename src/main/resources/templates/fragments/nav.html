@@ -1,0 +1,20 @@
+<div th:fragment="nav">
+    <header class="bg-light py-3 mb-4">
+        <div class="container d-flex justify-content-between">
+            <div>
+                <a class="navbar-brand" th:href="@{/}">Inventory</a>
+                <nav class="d-inline-block ms-3">
+                    <a class="me-3" th:href="@{/products}">Products</a>
+                </nav>
+            </div>
+            <!-- Profile and Logout buttons -->
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/profile}" class="btn btn-sm btn-info me-2">My Profile</a>
+                <form th:action="@{/logout}" method="post" class="d-inline-block float-end">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

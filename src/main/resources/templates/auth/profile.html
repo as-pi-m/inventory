@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>My Profile</title>
+        <!-- SCRIPTS -->
+        <div th:replace="~{fragments/links :: links}"></div>
+    </head>
+    <body>
+        <!-- NAVIGATION -->
+        <div th:replace="~{fragments/nav :: nav}"></div>
+
+        <main class="container mt-4">
+            <h1>My Profile</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Details</h5>
+                    <p class="card-text">
+                        <strong>Username:</strong> <span th:text="${username}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Authorities:</strong>
+                    <ul>
+                        <li th:each="auth : ${authorities}" th:text="${auth.authority}"></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- SCRIPTS -->
+        <div th:replace="~{fragments/scripts :: scripts}"></div>
+    </body>
+</html>

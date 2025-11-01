@@ -69,7 +69,7 @@ Tytuł: Dodanie obsługi logowania
 Opis: Jako użytkownik chcę mieć możliwość bezpiecznego logowania do systemu, aby chronić dane magazynowe.
 Kryteria akceptacji:
 - Dostęp do swojego profilu po podaniu poprawnych danych uwierzytelniających.
-- Logowanie do systemu
+- Logowanie do systemu.
 
 ID: US-INV-003
 Tytuł: Zarejestrowanie przyjęcia towaru
