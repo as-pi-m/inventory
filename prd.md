@@ -56,41 +56,47 @@ Firmy i zespoły często tracą czas i pieniądze przez nieaktualne stany magazy
 
 ## 5. Historyjki użytkowników (przykładowe)
 
-ID: US-INV-001
-Tytuł: Dodanie nowego produktu
-Opis: Jako magazynier chcę dodać nowy produkt z podstawowymi danymi (nazwa, SKU, jednostka), aby móc rejestrować jego ruchy.
+**ID: US-INV-001** <br/>
+Tytuł: Dodanie nowego produktu <br/>
+Opis: Jako magazynier chcę dodać nowy produkt z podstawowymi danymi (nazwa, SKU, jednostka), aby móc rejestrować jego ruchy. <br/>
 Kryteria akceptacji:
 - Formularz zawiera pola: nazwa, SKU, jednostka, minimalny poziom.
 - Po zapisaniu produkt pojawia się na liście produktów.
 - Produkt ma unikalne SKU (walidacja).
 
-ID: US-INV-002
-Tytuł: Dodanie obsługi logowania
-Opis: Jako użytkownik chcę mieć możliwość bezpiecznego logowania do systemu, aby chronić dane magazynowe.
+**ID: US-INV-002** <br/>
+Tytuł: Dodanie obsługi logowania <br/>
+Opis: Jako użytkownik chcę mieć możliwość bezpiecznego logowania do systemu, aby chronić dane magazynowe. <br/>
 Kryteria akceptacji:
 - Dostęp do swojego profilu po podaniu poprawnych danych uwierzytelniających.
 - Logowanie do systemu.
 
-ID: US-INV-003
-Tytuł: Zarejestrowanie przyjęcia towaru
-Opis: Jako magazynier chcę zarejestrować przyjęcie określonej ilości produktu, aby zaktualizować stany magazynowe.
+**ID: US-INV-003** <br/>
+Tytuł: Zarejestrowanie przyjęcia towaru <br/>
+Opis: Jako magazynier chcę zarejestrować przyjęcie określonej ilości produktu, aby zaktualizować stany magazynowe. <br/>
 Kryteria akceptacji:
 - Można wybrać produkt, lokalizację i wprowadzić ilość oraz źródło przyjęcia.
 - System aktualizuje stan i zapisuje wpis w historii operacji z autorem i timestampem.
 
-ID: US-INV-004
-Tytuł: Wykonanie korekty stanu (inwentaryzacja)
-Opis: Jako magazynier chcę wprowadzić korektę ilości z powodem, aby zsynchronizować stan magazynu z fizycznym.
+**ID: US-INV-004** <br/>
+Tytuł: Wykonanie korekty stanu (inwentaryzacja) <br/>
+Opis: Jako magazynier chcę wprowadzić korektę ilości z powodem, aby zsynchronizować stan magazynu z fizycznym. <br/>
 Kryteria akceptacji:
 - Korekta wymaga podania powodu i autora.
 - Historia korekty jest zapisana i widoczna w historii produktu.
 
-ID: US-INV-005
-Tytuł: Alert niskiego stanu
-Opis: Jako manager chcę otrzymywać listę produktów poniżej minimalnego poziomu, aby móc zamówić brakujące zapasy.
+**ID: US-INV-005** <br/>
+Tytuł: Alert niskiego stanu <br/>
+Opis: Jako manager chcę otrzymywać listę produktów poniżej minimalnego poziomu, aby móc zamówić brakujące zapasy. <br/>
 Kryteria akceptacji:
 - System generuje widok/filtr produktów z ilością poniżej progu.
 - Możliwość eksportu listy do CSV.
+
+**ID: US-INV-006** <br/>
+Tytuł: Dodanie CI/CD pipeline <br/>
+Opis: Jako deweloper po dodaniu kodu chcę mieć automatyczne testy i wdrożenie na serwerze, aby zapewnić jakość i szybkie dostarczanie zmian. <br/>
+Kryteria akceptacji:
+- Po zatwierdzeniu kodu w repozytorium (MR do głównej gałęzi) uruchamiane są testy jednostkowe i integracyjne wraz z instalacją na serwerze.
 
 ## 6. Metryki sukcesu
 
