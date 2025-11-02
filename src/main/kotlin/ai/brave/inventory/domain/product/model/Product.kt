@@ -1,16 +1,6 @@
 package ai.brave.inventory.domain.product.model
 
-import jakarta.persistence.CollectionTable
-import jakarta.persistence.Column
-import jakarta.persistence.ElementCollection
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Index
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import java.math.BigDecimal
@@ -44,5 +34,9 @@ data class Product(
     val unitPrice: BigDecimal? = null,
 
     @Column(nullable = false)
-    val deleted: Boolean = false
+    val deleted: Boolean = false,
+
+    @field:Min(0)
+    @Column(nullable = false)
+    var quantity: Int = 0
 )

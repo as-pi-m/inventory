@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Arrival</title>
+    <div th:replace="~{fragments/links :: links}"></div>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <div th:replace="~{fragments/nav :: nav}"></div>
+
+    <main class="container mt-4">
+        <h1 th:text="'Register New Arrival for ' + ${product.name}">Register New Arrival</h1>
+        <form th:action="@{/arrivals}" th:object="${arrival}" method="post">
+            <input type="hidden" id="productId" name="productId" class="form-control" th:value="${product.id}" />
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" id="quantity" th:field="*{quantity}" class="form-control" required min="1" />
+                <div class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+            </div>
+            <div class="mb-3">
+                <label for="source" class="form-label">Source (e.g. Supplier)</label>
+                <input type="text" id="source" th:field="*{source}" class="form-control" required />
+                <div class="text-danger" th:if="${#fields.hasErrors('source')}" th:errors="*{source}"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Register Arrival</button>
+        </form>
+    </main>
+
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>
+

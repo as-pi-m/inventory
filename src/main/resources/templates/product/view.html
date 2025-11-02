@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>View Product</title>
+        <div th:replace="~{fragments/links :: links}"></div>
+    </head>
+    <body>
+        <!-- NAVIGATION -->
+        <div th:replace="~{fragments/nav :: nav}"></div>
+
+        <main class="container mt-4">
+            <h1>Product Details</h1>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                    <p class="card-text">
+                        <strong>SKU:</strong> <span th:text="${product.sku}"></span>
+                    </p>
+                <p class="card-text">
+                    <strong>Unit:</strong> <span th:text="${product.unit}"></span>
+                </p>
+                <p class="card-text">
+                    <strong>Quantity:</strong> <span th:text="${product.quantity}"></span>
+                </p>
+                    <p class="card-text">
+                        <strong>Minimum Order Level:</strong> <span th:text="${product.minOrderLevel}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Unit Price:</strong> <span th:text="${product.unitPrice}"></span>
+                    </p>
+                </div>
+            </div>
+            <a th:href="@{/products}" class="btn btn-primary mt-3">Back to List</a>
+        </main>
+
+        <div th:replace="~{fragments/scripts :: scripts}"></div>
+    </body>
+</html>
+
