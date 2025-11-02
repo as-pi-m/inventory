@@ -38,5 +38,8 @@ data class Product(
 
     @field:Min(0)
     @Column(nullable = false)
-    var quantity: Int = 0
+    var quantity: Int = 0,
+
+    @Column(nullable = false)
+    val createdBy: String = ""
 )

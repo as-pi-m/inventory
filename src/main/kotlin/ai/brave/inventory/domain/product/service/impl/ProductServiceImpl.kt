@@ -3,9 +3,9 @@ package ai.brave.inventory.domain.product.service.impl
 import ai.brave.inventory.domain.product.model.Product
 import ai.brave.inventory.domain.product.repository.ProductRepository
 import ai.brave.inventory.domain.product.service.ProductService
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class ProductServiceImpl(
@@ -23,7 +23,12 @@ class ProductServiceImpl(
         productRepository.findBySku(product.sku).ifPresent {
             throw IllegalArgumentException("SKU already exists")
         }
-        return productRepository.save(product)
+
+        // Get current username from SecurityContext
+        val username = SecurityContextHolder.getContext().authentication?.name ?: "system"
+        val productWithCreator = product.copy(createdBy = username)
+
+        return productRepository.save(productWithCreator)
     }
 
     @Transactional

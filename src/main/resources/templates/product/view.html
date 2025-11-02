@@ -17,6 +17,9 @@
                     <p class="card-text">
                         <strong>SKU:</strong> <span th:text="${product.sku}"></span>
                     </p>
+                    <p class="card-text" th:if="${product.description != null and !product.description.isEmpty()}">
+                        <strong>Description:</strong> <span th:text="${product.description}"></span>
+                    </p>
                 <p class="card-text">
                     <strong>Unit:</strong> <span th:text="${product.unit}"></span>
                 </p>
@@ -28,6 +31,9 @@
                     </p>
                     <p class="card-text">
                         <strong>Unit Price:</strong> <span th:text="${product.unitPrice}"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Created By:</strong> <span th:text="${product.createdBy}"></span>
                     </p>
                 </div>
             </div>
