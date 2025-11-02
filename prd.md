@@ -82,6 +82,7 @@ Kryteria akceptacji:
 Tytuł: Wykonanie korekty stanu (inwentaryzacja) <br/>
 Opis: Jako magazynier chcę wprowadzić korektę ilości z powodem, aby zsynchronizować stan magazynu z fizycznym. <br/>
 Kryteria akceptacji:
+- Nie można edytować stanu za pomocą "Edit" — tylko przez korektę.
 - Korekta wymaga podania powodu i autora.
 - Historia korekty jest zapisana i widoczna w historii produktu.
 
@@ -93,6 +94,19 @@ Kryteria akceptacji:
 - Możliwość eksportu listy do CSV.
 
 **ID: US-INV-006** <br/>
+Tytuł: Stworzenie serwera <br/>
+Opis: Jako deweloper muszę mieć gdzie zainstalować aplikację. <br/>
+Kryteria akceptacji:
+- Działający serwer linux z włączonym nginx
+
+**ID: US-INV-007** <br/>
+Tytuł: Stworzenie domeny i dodanie jej do Cloudflare <br/>
+Opis: Jako deweloper muszę odpowiednio zabezpieczyć stronę przed atakami. <br/>
+Kryteria akceptacji:
+- Dodana domena wskazująca na serwer
+- Dodana proxy cloudflare
+
+**ID: US-INV-008** <br/>
 Tytuł: Dodanie CI/CD pipeline <br/>
 Opis: Jako deweloper po dodaniu kodu chcę mieć automatyczne testy i wdrożenie na serwerze, aby zapewnić jakość i szybkie dostarczanie zmian. <br/>
 Kryteria akceptacji:
