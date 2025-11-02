@@ -25,6 +25,7 @@
                     <th>Quantity</th>
                     <th>Min order</th>
                     <th>Unit price</th>
+                    <th>Created By</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -36,6 +37,7 @@
                     <td th:text="${p.unit}">Unit</td>
                     <td th:text="${p.minOrderLevel}">0</td>
                     <td th:text="${p.unitPrice}">0.00</td>
+                    <td th:text="${p.createdBy}">user</td>
                     <td>
                         <a class="btn btn-sm btn-secondary" th:href="@{/arrivals/product/{id}(id=${p.id})}">Arrivals</a>
                         <a class="btn btn-sm btn-info" th:href="@{/products/{id}(id=${p.id})}">View</a>
