@@ -60,4 +60,11 @@ class ProductController(
         redirect.addFlashAttribute("success", "Product deleted")
         return "redirect:/products"
     }
+
+    @GetMapping("/{id}")
+    fun view(@PathVariable id: Long, model: Model): String {
+        val product = productService.findById(id) ?: throw NoSuchElementException("Product not found")
+        model.addAttribute("product", product)
+        return "product/view"
+    }
 }

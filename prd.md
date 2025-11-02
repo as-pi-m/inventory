@@ -75,7 +75,7 @@ Kryteria akceptacji:
 Tytuł: Zarejestrowanie przyjęcia towaru <br/>
 Opis: Jako magazynier chcę zarejestrować przyjęcie określonej ilości produktu, aby zaktualizować stany magazynowe. <br/>
 Kryteria akceptacji:
-- Można wybrać produkt, lokalizację i wprowadzić ilość oraz źródło przyjęcia.
+- Można wybrać produkt i wprowadzić ilość oraz źródło przyjęcia (nazwę doręczyciela).
 - System aktualizuje stan i zapisuje wpis w historii operacji z autorem i timestampem.
 
 **ID: US-INV-004** <br/>

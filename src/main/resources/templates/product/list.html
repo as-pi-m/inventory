@@ -22,6 +22,7 @@
                     <th>Name</th>
                     <th>SKU</th>
                     <th>Unit</th>
+                    <th>Quantity</th>
                     <th>Min order</th>
                     <th>Unit price</th>
                     <th>Actions</th>
@@ -31,10 +32,13 @@
                 <tr th:each="p : ${products}">
                     <td th:text="${p.name}">Product name</td>
                     <td th:text="${p.sku}">SKU</td>
+                    <td th:text="${p.quantity}">0</td>
                     <td th:text="${p.unit}">Unit</td>
                     <td th:text="${p.minOrderLevel}">0</td>
                     <td th:text="${p.unitPrice}">0.00</td>
                     <td>
+                        <a class="btn btn-sm btn-secondary" th:href="@{/arrivals/product/{id}(id=${p.id})}">Arrivals</a>
+                        <a class="btn btn-sm btn-info" th:href="@{/products/{id}(id=${p.id})}">View</a>
                         <a class="btn btn-sm btn-warning" th:href="@{/products/{id}/edit(id=${p.id})}">Edit</a>
                         <form th:action="@{/products/{id}/delete(id=${p.id})}" method="post" class="d-inline">
                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
