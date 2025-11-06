@@ -39,7 +39,7 @@
                     <td th:text="${p.unitPrice}">0.00</td>
                     <td th:text="${p.createdBy}">user</td>
                     <td>
-                        <a class="btn btn-sm btn-secondary" th:href="@{/arrivals/product/{id}(id=${p.id})}">Arrivals</a>
+                        <a class="btn btn-sm btn-primary" th:href="@{/history/{id}(id=${p.id})}">History</a>
                         <a class="btn btn-sm btn-info" th:href="@{/products/{id}(id=${p.id})}">View</a>
                         <a class="btn btn-sm btn-warning" th:href="@{/products/{id}/edit(id=${p.id})}">Edit</a>
                         <form th:action="@{/products/{id}/delete(id=${p.id})}" method="post" class="d-inline">

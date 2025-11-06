@@ -37,7 +37,12 @@
                     </p>
                 </div>
             </div>
-            <a th:href="@{/products}" class="btn btn-primary mt-3">Back to List</a>
+            <div class="mt-3 d-flex gap-2">
+                <a th:href="@{/history/{id}(id=${product.id})}" class="btn btn-primary">View History</a>
+                <a th:href="@{/arrivals/new/{id}(id=${product.id})}" class="btn btn-success">Register Arrival</a>
+                <a th:href="@{/corrections/new/{id}(id=${product.id})}" class="btn btn-warning">Register Correction</a>
+                <a th:href="@{/products}" class="btn btn-secondary">Back to List</a>
+            </div>
         </main>
 
         <div th:replace="~{fragments/scripts :: scripts}"></div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Validation Error</title>
+        <div th:replace="~{fragments/links :: links}"></div>
+    </head>
+    <body>
+        <!-- NAVIGATION -->
+        <div th:replace="~{fragments/nav :: nav}"></div>
+
+        <main class="container mt-4">
+            <div class="alert alert-danger">
+                <h1>Validation Error</h1>
+                <p th:text="${error}">Validation failed</p>
+
+                <div th:if="${errors != null and !errors.isEmpty()}">
+                    <h4>Details:</h4>
+                    <ul>
+                        <li th:each="err : ${errors}" th:text="${err.defaultMessage}">Error message</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="javascript:history.back()" class="btn btn-primary">Go Back</a>
+            <a th:href="@{/products}" class="btn btn-secondary">Go to Products</a>
+        </main>
+
+        <div th:replace="~{fragments/scripts :: scripts}"></div>
+    </body>
+</html>
+

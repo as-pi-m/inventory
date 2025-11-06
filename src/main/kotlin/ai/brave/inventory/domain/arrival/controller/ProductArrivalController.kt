@@ -27,12 +27,12 @@ class ProductArrivalController(
     @PostMapping
     fun registerArrival(@Valid @ModelAttribute("arrival") arrivalDto: ProductArrivalDto, binding: BindingResult, redirect: RedirectAttributes, model: Model): String {
         if (binding.hasErrors()) {
-            model.addAttribute("products", productService.listAll())
+            model.addAttribute("product", productService.findById(arrivalDto.productId))
             return "arrival/form"
         }
         productArrivalService.registerArrival(arrivalDto)
         redirect.addFlashAttribute("success", "Arrival registered successfully")
-        return "redirect:/products"
+        return "redirect:/history/${arrivalDto.productId}"
     }
 
     @GetMapping("/product/{productId}")

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Product History</title>
+        <div th:replace="~{fragments/links :: links}"></div>
+    </head>
+    <body>
+        <!-- NAVIGATION -->
+        <div th:replace="~{fragments/nav :: nav}"></div>
+
+        <main class="container mt-4">
+            <h1>History for <span th:text="${product.name}"></span></h1>
+
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div class="mb-3">
+                <p><strong>SKU:</strong> <span th:text="${product.sku}"></span></p>
+                <p><strong>Current Quantity:</strong> <span th:text="${product.quantity}"></span> <span th:text="${product.unit}"></span></p>
+            </div>
+
+            <div class="d-flex gap-2 mb-3">
+                <a th:href="@{/arrivals/new/{id}(id=${product.id})}" class="btn btn-success">
+                    Register Arrival
+                </a>
+                <a th:href="@{/corrections/new/{id}(id=${product.id})}" class="btn btn-warning">
+                    Register Correction
+                </a>
+                <a th:href="@{/products}" class="btn btn-secondary">
+                    Back to Products
+                </a>
+            </div>
+
+            <h2>Arrivals</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Quantity</th>
+                        <th>Source</th>
+                        <th>Registered By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="arrival : ${arrivals}">
+                        <td th:text="${#temporals.format(arrival.arrivalDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="text-success">+<span th:text="${arrival.quantity}"></span></td>
+                        <td th:text="${arrival.source}"></td>
+                        <td th:text="${arrival.createdBy}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(arrivals)}">
+                        <td colspan="4" class="text-center text-muted">No arrivals recorded</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="mt-4">Stock Corrections</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Quantity</th>
+                        <th>Reason</th>
+                        <th>Registered By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="correction : ${corrections}">
+                        <td th:text="${#temporals.format(correction.correctionDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:classappend="${correction.quantity > 0} ? 'text-success' : 'text-danger'">
+                            <span th:text="${correction.quantity > 0 ? '+' + correction.quantity : correction.quantity}"></span>
+                        </td>
+                        <td th:text="${correction.reason}"></td>
+                        <td th:text="${correction.createdBy}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(corrections)}">
+                        <td colspan="4" class="text-center text-muted">No corrections recorded</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <div th:replace="~{fragments/scripts :: scripts}"></div>
+    </body>
+</html>
+
