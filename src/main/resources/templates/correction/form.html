@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Stock Correction</title>
+        <div th:replace="~{fragments/links :: links}"></div>
+    </head>
+    <body>
+        <!-- NAVIGATION -->
+        <div th:replace="~{fragments/nav :: nav}"></div>
+
+        <main class="container mt-4">
+            <h1>Stock Correction for <span th:text="${product.name}"></span></h1>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid correction data
+            </div>
+
+            <form th:action="@{/corrections}" method="post" th:object="${correction}" class="needs-validation" novalidate>
+                <input type="hidden" th:field="*{productId}" />
+
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity (+ to add, - to subtract)</label>
+                    <input type="number" class="form-control" id="quantity" th:field="*{quantity}" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">
+                        Quantity error
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason</label>
+                    <textarea class="form-control" id="reason" th:field="*{reason}" rows="3" required></textarea>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('reason')}" th:errors="*{reason}">
+                        Reason is required
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Register Correction</button>
+                    <a th:href="@{/history/{id}(id=${product.id})}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </main>
+
+        <div th:replace="~{fragments/scripts :: scripts}"></div>
+    </body>
+</html>
+

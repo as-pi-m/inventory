@@ -85,6 +85,7 @@ Kryteria akceptacji:
 - Nie można edytować stanu za pomocą "Edit" — tylko przez korektę.
 - Korekta wymaga podania powodu i autora.
 - Historia korekty jest zapisana i widoczna w historii produktu.
+- Błędy powinny być odpowiednio obsłużone.
 
 **ID: US-INV-005** <br/>
 Tytuł: Alert niskiego stanu <br/>

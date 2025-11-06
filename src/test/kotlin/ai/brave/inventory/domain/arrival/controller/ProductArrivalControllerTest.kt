@@ -73,7 +73,7 @@ class ProductArrivalControllerTest {
                 .param("source", "Supplier A")
         )
             .andExpect(status().is3xxRedirection)
-            .andExpect(redirectedUrl("/products"))
+            .andExpect(redirectedUrl("/history/${testProduct.id}"))
             .andExpect(flash().attributeExists("success"))
 
         // Verify that quantity was updated
@@ -92,7 +92,7 @@ class ProductArrivalControllerTest {
                 .param("source", "Supplier A")
         )
             .andExpect(status().is3xxRedirection)
-            .andExpect(view().name("redirect:/products"))
+            .andExpect(view().name("redirect:/history/${testProduct.id}"))
     }
 
     @Test
@@ -106,7 +106,7 @@ class ProductArrivalControllerTest {
                 .param("source", "")
         )
             .andExpect(status().is3xxRedirection)
-            .andExpect(view().name("redirect:/products"))
+            .andExpect(view().name("redirect:/history/${testProduct.id}"))
     }
 
     @Test
@@ -146,7 +146,7 @@ class ProductArrivalControllerTest {
                 .param("source", "Supplier A")
         )
             .andExpect(status().is3xxRedirection)
-            .andExpect(view().name("redirect:/products"))
+            .andExpect(view().name("redirect:/history/${testProduct.id}"))
     }
 
     @Test
