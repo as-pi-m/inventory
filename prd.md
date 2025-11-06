@@ -95,19 +95,25 @@ Kryteria akceptacji:
 - Możliwość eksportu listy do CSV.
 
 **ID: US-INV-006** <br/>
+Tytuł: Dodanie dokumentacji projektowej <br/>
+Opis: Jako deweloper muszę mieć dokumentację aplikacji. <br/>
+Kryteria akceptacji:
+- README.md zawierające całośc dokumentacji o aplikacji z opisem funkcjonalności.
+
+**ID: US-INV-007** <br/>
 Tytuł: Stworzenie serwera <br/>
 Opis: Jako deweloper muszę mieć gdzie zainstalować aplikację. <br/>
 Kryteria akceptacji:
 - Działający serwer linux z włączonym nginx
 
-**ID: US-INV-007** <br/>
+**ID: US-INV-008** <br/>
 Tytuł: Stworzenie domeny i dodanie jej do Cloudflare <br/>
 Opis: Jako deweloper muszę odpowiednio zabezpieczyć stronę przed atakami. <br/>
 Kryteria akceptacji:
 - Dodana domena wskazująca na serwer
 - Dodana proxy cloudflare
 
-**ID: US-INV-008** <br/>
+**ID: US-INV-009** <br/>
 Tytuł: Dodanie CI/CD pipeline <br/>
 Opis: Jako deweloper po dodaniu kodu chcę mieć automatyczne testy i wdrożenie na serwerze, aby zapewnić jakość i szybkie dostarczanie zmian. <br/>
 Kryteria akceptacji:
