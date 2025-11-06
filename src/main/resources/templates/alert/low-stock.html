@@ -74,7 +74,7 @@
                                     <td th:text="${product.minOrderLevel}">20</td>
                                     <td th:text="${product.unit}">pcs</td>
                                     <td>
-                                        <span class="text-danger" th:text="${product.minOrderLevel - product.currentQuantity}">10</span>
+                                        <span class="text-danger" th:text="${product.currentQuantity - threshold}"></span>
                                     </td>
                                     <td>
                                         <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-info">View</a>
