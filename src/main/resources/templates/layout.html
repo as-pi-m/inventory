@@ -12,8 +12,100 @@
         <div th:replace="~{fragments/nav :: nav}"></div>
 
         <main class="container">
-            <h1>Welcome to Inventory</h1>
-            <p>This is the static home page. Use the navigation to manage products.</p>
+            <div class="text-center my-5">
+                <h1 class="display-4">Welcome to Inventory Management System</h1>
+                <p class="lead text-muted">A lightweight, secure solution for managing your warehouse operations</p>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-box-seam text-primary"></i> Product Management
+                            </h5>
+                            <p class="card-text">
+                                Add, edit, and organize your products with detailed information including SKU,
+                                pricing, units of measure, and minimum stock levels. Track every item in your inventory.
+                            </p>
+                            <a th:href="@{/products}" class="btn btn-primary btn-sm">View Products</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-arrow-down-circle text-success"></i> Stock Arrivals
+                            </h5>
+                            <p class="card-text">
+                                Register incoming shipments with automatic stock updates. Record supplier information
+                                and maintain a complete audit trail of all arrivals with timestamps and user tracking.
+                            </p>
+                            <a th:href="@{/products}" class="btn btn-success btn-sm">Register Arrival</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-pencil-square text-warning"></i> Stock Corrections
+                            </h5>
+                            <p class="card-text">
+                                Perform inventory adjustments with mandatory documentation. Record reasons for
+                                stock changes and maintain compliance with full correction history and accountability.
+                            </p>
+                            <a th:href="@{/products}" class="btn btn-warning btn-sm">Make Correction</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-exclamation-triangle text-danger"></i> Low Stock Alerts
+                            </h5>
+                            <p class="card-text">
+                                Generate reports of products below your custom threshold. Export to CSV for easy
+                                ordering and prevent stockouts with real-time inventory monitoring.
+                            </p>
+                            <a th:href="@{/alerts/low-stock}" class="btn btn-danger btn-sm">Check Alerts</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-light mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-shield-check"></i> Secure & Reliable
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-person-lock"></i> User Authentication</h6>
+                            <p class="small">Secure login system with encrypted passwords and session management.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-clock-history"></i> Complete Audit Trail</h6>
+                            <p class="small">Track every change with timestamps, user information, and detailed history.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-database"></i> PostgreSQL Backend</h6>
+                            <p class="small">Robust database ensuring data integrity and reliable performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-muted">
+                <p class="small">
+                    Built with Spring Boot & Kotlin | Secured with Spring Security | Responsive Bootstrap UI
+                </p>
+            </div>
         </main>
 
         <!-- SCRIPTS -->
