@@ -22,7 +22,7 @@ class SecurityConfig {
         http
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/css/**", "/js/**", "/webjars/**", "/login", "/error").permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/webjars/**", "/login", "/error", "/health").permitAll()
                     .anyRequest().authenticated()
             }
             .formLogin { form ->
