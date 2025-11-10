@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Inventory - CI/CD Pipeline
 
 on:
   push:
@@ -79,7 +79,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean bootJar
 
       - name: Rename JAR file
         run: |
@@ -100,10 +100,6 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-      - name: Install sshpass
-        run: |
-          apt update && apt install -y sshpass
-
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
@@ -111,38 +107,66 @@ jobs:
           path: ./
 
       - name: Upload JAR to server
-        run: |
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp inventory.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/inventory
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: "inventory.jar"
+          target: "/root/inventory/"
 
       - name: Deploy application
-        run: |
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p 2022 '
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASSWORD }}
+          run: |
+            set -e
+            
             # Stop the application
-            kill -9 $(pgrep -f inventory.jar) || true
+            PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
+            
+            echo "Killing process $PID_APP..."
+            kill -9 $PID_APP
+            
+            sleep 30
           
             # Start the application
-            java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
-          
-            # Wait for application to start
-            sleep 15
-          '
+            echo "Starting application..."
+            source ~/.profile
+            nohup java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            disown 
+            
+            exit 0
 
       - name: Health check
-        run: |
-          # Perform health check (adjust URL as needed)
-          HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
-          
-          for i in {1..10}; do
-            if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
-              echo "Application is healthy!"
-              exit 0
-            fi
-            echo "Waiting for application to be ready... ($i/10)"
-            sleep 5
-          done
-          
-          echo "Health check failed!"
-          exit 1
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASSWORD }}
+          run: |
+            set -e
+            
+            # Perform health check (adjust URL as needed)
+            HEALTH_CHECK_URL="${{ secrets.APP_URL }}/health"
+            
+            for i in {1..10}; do
+              if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
+                echo "Application is healthy!"
+                exit 0
+              fi
+            
+              echo "Waiting for application to be ready... ($i/10)"
+              sleep 5
+            done
+            
+            echo "Health check failed!"
+            exit 1
 
       - name: Notify deployment status
         if: always()
