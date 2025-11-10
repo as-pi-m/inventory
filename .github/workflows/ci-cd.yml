@@ -62,7 +62,7 @@ jobs:
     name: Build JAR
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout code
@@ -84,20 +84,20 @@ jobs:
       - name: Rename JAR file
         run: |
           mkdir -p build/deploy
-          cp build/libs/*.jar build/deploy/inventory.jar
+          cp build/libs/*.jar /inventory.jar
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: inventory-jar
-          path: build/deploy/inventory.jar
+          path: /inventory.jar
           retention-days: 30
 
   deploy:
     name: Deploy to Server
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+#    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Install sshpass
