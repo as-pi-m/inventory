@@ -107,14 +107,14 @@ jobs:
           path: ./
 
       - name: Upload JAR to server
-        uses: matheusvanzan/sshpass-action@v2
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
-          user: ${{ secrets.SERVER_USER }}
-          pass: ${{ secrets.SERVER_PASSWORD }}
-          run: |
-            sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -P ${{ secrets.SERVER_PORT }} inventory.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/inventory
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          source: "inventory.jar"
+          target: "/root/inventory/"
 
       - name: Deploy application
         uses: matheusvanzan/sshpass-action@v2
@@ -133,24 +133,22 @@ jobs:
             
               # Wait for application to start
               sleep 15
-            '
-
-      - name: Health check
-        run: |
-          # Perform health check (adjust URL as needed)
-          HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
-          
-          for i in {1..10}; do
-            if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
+            
+              # Perform health check (adjust URL as needed)
+              HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
+              
+              for i in {1..10}; do
+              if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
               echo "Application is healthy!"
               exit 0
-            fi
-            echo "Waiting for application to be ready... ($i/10)"
-            sleep 5
-          done
-          
-          echo "Health check failed!"
-          exit 1
+              fi
+              echo "Waiting for application to be ready... ($i/10)"
+              sleep 5
+              done
+              
+              echo "Health check failed!"
+              exit 1
+            '
 
       - name: Notify deployment status
         if: always()
