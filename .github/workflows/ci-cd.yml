@@ -146,6 +146,8 @@ jobs:
           user: ${{ secrets.SERVER_USER }}
           pass: ${{ secrets.SERVER_PASSWORD }}
           run: |
+            set -e
+            
             # Perform health check (adjust URL as needed)
             HEALTH_CHECK_URL="${{ secrets.APP_URL }}/health"
             
