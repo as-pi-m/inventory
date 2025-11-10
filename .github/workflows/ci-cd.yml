@@ -125,11 +125,15 @@ jobs:
           pass: ${{ secrets.SERVER_PASSWORD }}
           run: |
             # Stop the application
-            kill -9 $(pgrep -f inventory.jar)
+            PID_APP=`ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1`
+            
+            echo "Killing process $PID_APP"
+            kill -9 $PID_APP
             
             sleep 10
           
             # Start the application
+            echo "Starting application..."
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
           
             # Wait for application to start
