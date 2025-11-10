@@ -124,31 +124,29 @@ jobs:
           user: ${{ secrets.SERVER_USER }}
           pass: ${{ secrets.SERVER_PASSWORD }}
           run: |
-            sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p ${{ secrets.SERVER_PORT }} '
-              # Stop the application
-              kill -9 $(pgrep -f inventory.jar) || true
+            # Stop the application
+            kill -9 $(pgrep -f inventory.jar) || true
+          
+            # Start the application
+            java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+          
+            # Wait for application to start
+            sleep 15
+          
+            # Perform health check (adjust URL as needed)
+            HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
             
-              # Start the application
-              java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            for i in {1..10}; do
+            if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
+            echo "Application is healthy!"
+            exit 0
+            fi
+            echo "Waiting for application to be ready... ($i/10)"
+            sleep 5
+            done
             
-              # Wait for application to start
-              sleep 15
-            
-              # Perform health check (adjust URL as needed)
-              HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
-              
-              for i in {1..10}; do
-              if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
-              echo "Application is healthy!"
-              exit 0
-              fi
-              echo "Waiting for application to be ready... ($i/10)"
-              sleep 5
-              done
-              
-              echo "Health check failed!"
-              exit 1
-            '
+            echo "Health check failed!"
+            exit 1
 
       - name: Notify deployment status
         if: always()
