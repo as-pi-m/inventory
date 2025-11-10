@@ -137,6 +137,8 @@ jobs:
             # Start the application
             echo "Starting application..."
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            
+            exit 0
 
       - name: Health check
         uses: matheusvanzan/sshpass-action@v2
