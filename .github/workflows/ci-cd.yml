@@ -126,6 +126,8 @@ jobs:
           run: |
             # Stop the application
             kill -9 $(pgrep -f inventory.jar)
+            
+            sleep 10
           
             # Start the application
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
