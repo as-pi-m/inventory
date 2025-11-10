@@ -1,0 +1,162 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  JAVA_VERSION: '21'
+  GRADLE_VERSION: '8.14.3'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: inventory_test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests
+        run: ./gradlew test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/inventory_test
+          SPRING_DATASOURCE_USERNAME: test
+          SPRING_DATASOURCE_PASSWORD: test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: build/reports/tests/test/
+
+      - name: Publish test report
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          path: build/test-results/test/*.xml
+          reporter: java-junit
+
+  build:
+    name: Build JAR
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      - name: Rename JAR file
+        run: |
+          mkdir -p build/deploy
+          cp build/libs/*.jar build/deploy/inventory.jar
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory-jar
+          path: build/deploy/inventory.jar
+          retention-days: 30
+
+  deploy:
+    name: Deploy to Server
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+      - name: Install sshpass
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: inventory-jar
+          path: ./
+
+      - name: Upload JAR to server
+        run: |
+          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp inventory.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/inventory
+
+      - name: Deploy application
+        run: |
+          sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p 2022 '
+            # Stop the application
+            kill -9 $(pgrep -f inventory.jar) || true
+          
+            # Start the application
+            java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+          
+            # Wait for application to start
+            sleep 15
+          '
+
+      - name: Health check
+        run: |
+          # Perform health check (adjust URL as needed)
+          HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
+          
+          for i in {1..10}; do
+            if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
+              echo "Application is healthy!"
+              exit 0
+            fi
+            echo "Waiting for application to be ready... ($i/10)"
+            sleep 5
+          done
+          
+          echo "Health check failed!"
+          exit 1
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi
