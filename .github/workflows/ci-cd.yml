@@ -100,10 +100,6 @@ jobs:
 #    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
-      - name: Install sshpass
-        run: |
-          apt update && apt install -y sshpass
-
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
@@ -111,21 +107,33 @@ jobs:
           path: ./
 
       - name: Upload JAR to server
-        run: |
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} scp inventory.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/inventory
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASSWORD }}
+          run: |
+            sshpass -p "${{ secrets.SERVER_PASSWORD }}" scp -P ${{ secrets.SERVER_PORT }} inventory.jar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/root/inventory
 
       - name: Deploy application
-        run: |
-          sshpass -p ${{ secrets.SERVER_PASSWORD }} ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p 2022 '
-            # Stop the application
-            kill -9 $(pgrep -f inventory.jar) || true
-          
-            # Start the application
-            java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
-          
-            # Wait for application to start
-            sleep 15
-          '
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASSWORD }}
+          run: |
+            sshpass -p "${{ secrets.SERVER_PASSWORD }}" ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} -p ${{ secrets.SERVER_PORT }} '
+              # Stop the application
+              kill -9 $(pgrep -f inventory.jar) || true
+            
+              # Start the application
+              java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            
+              # Wait for application to start
+              sleep 15
+            '
 
       - name: Health check
         run: |
