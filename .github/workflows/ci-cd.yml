@@ -123,19 +123,29 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           user: ${{ secrets.SERVER_USER }}
           pass: ${{ secrets.SERVER_PASSWORD }}
-          run: |           
+          run: |
+            set -e
+            
             # Stop the application
             PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
             
             echo "Killing process $PID_APP..."
             kill -9 $PID_APP
             
-            sleep 10
+            sleep 5
           
             # Start the application
             echo "Starting application..."
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
-          
+
+      - name: Health check
+        uses: matheusvanzan/sshpass-action@v2
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASSWORD }}
+          run: |
             # Perform health check (adjust URL as needed)
             HEALTH_CHECK_URL="${{ secrets.APP_URL }}/health"
             
@@ -144,7 +154,7 @@ jobs:
                 echo "Application is healthy!"
                 exit 0
               fi
-              
+            
               echo "Waiting for application to be ready... ($i/10)"
               sleep 5
             done
