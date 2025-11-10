@@ -125,7 +125,7 @@ jobs:
           pass: ${{ secrets.SERVER_PASSWORD }}
           run: |
             # Stop the application
-            kill -9 $(pgrep -f inventory.jar) || true
+            kill -9 $(pgrep -f inventory.jar)
           
             # Start the application
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
