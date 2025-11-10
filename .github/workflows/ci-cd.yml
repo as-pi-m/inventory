@@ -124,10 +124,12 @@ jobs:
           user: ${{ secrets.SERVER_USER }}
           pass: ${{ secrets.SERVER_PASSWORD }}
           run: |
-            # Stop the application
-            PID_APP=`ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1`
+            set -e
             
-            echo "Killing process $PID_APP"
+            # Stop the application
+            PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
+            
+            echo "Killing process $PID_APP..."
             kill -9 $PID_APP
             
             sleep 10
@@ -135,9 +137,6 @@ jobs:
             # Start the application
             echo "Starting application..."
             source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
-          
-            # Wait for application to start
-            sleep 15
           
             # Perform health check (adjust URL as needed)
             HEALTH_CHECK_URL="${{ secrets.APP_URL }}/health"
