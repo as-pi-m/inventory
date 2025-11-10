@@ -123,9 +123,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           user: ${{ secrets.SERVER_USER }}
           pass: ${{ secrets.SERVER_PASSWORD }}
-          run: |
-            set -e
-            
+          run: |           
             # Stop the application
             PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
             
