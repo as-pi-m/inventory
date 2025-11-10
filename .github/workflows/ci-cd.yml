@@ -134,7 +134,7 @@ jobs:
             sleep 15
           
             # Perform health check (adjust URL as needed)
-            HEALTH_CHECK_URL="${{ secrets.APP_URL }}/actuator/health"
+            HEALTH_CHECK_URL="${{ secrets.APP_URL }}/health"
             
             for i in {1..10}; do
             if curl -f -s "$HEALTH_CHECK_URL" > /dev/null 2>&1; then
