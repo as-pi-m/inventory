@@ -127,16 +127,12 @@ jobs:
             set -e
             
             # Stop the application
-            # PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
+            PID_APP=$(ps aux | grep -i -P "inventory.jar" | grep -o -i -P '[0-9]{3,6}' | head -1)
             
-            # echo "Killing process $PID_APP..."
-            # kill -9 $PID_APP
-                 
-            echo "Killing running application..."
-             
-            pkill -f inventory.jar || true
+            echo "Killing process $PID_APP..."
+            kill -9 $PID_APP
             
-            sleep 10
+            sleep 30
           
             # Start the application
             echo "Starting application..."
