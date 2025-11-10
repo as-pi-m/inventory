@@ -134,7 +134,7 @@ jobs:
             
             sleep 30
           
-            # Start the application
+            # Start the app
             echo "Starting application..."
             source ~/.profile
             nohup java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
