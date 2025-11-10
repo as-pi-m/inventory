@@ -136,7 +136,9 @@ jobs:
           
             # Start the application
             echo "Starting application..."
-            source ~/.profile && java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            source ~/.profile
+            nohup java -jar /root/inventory/inventory.jar > /root/inventory/inventory.log 2>&1 &
+            disown 
             
             exit 0
 
