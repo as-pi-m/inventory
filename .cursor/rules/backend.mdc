@@ -1,0 +1,53 @@
+---
+description: Backend rules for Inventory Management System
+globs:
+  - src/main/kotlin/ai/brave/inventory/**/*.kt
+  - src/main/resources/**/*.properties
+  - build.gradle.kts
+alwaysApply: false
+---
+
+### Backend and Database
+
+#### Core Stack
+- Spring Boot 3.x with Kotlin
+- Spring Data JPA with Hibernate ORM
+- PostgreSQL database
+- Spring Security with BCrypt
+- Jakarta Bean Validation
+
+#### Architecture Patterns
+- Domain-driven design (DDD) with domain packages
+- Constructor injection (not field injection)
+- Service interfaces with `@Service` implementations
+- Repositories extending `JpaRepository<Entity, ID>`
+- DTOs for data transfer between layers
+- `@Transactional` for multi-entity operations
+
+#### Key Rules
+- **Entities**: Use Kotlin data classes with JPA annotations, LAZY loading for ManyToOne
+- **Product Quantity**: Never modify directly - only through arrivals or corrections
+- **Soft Delete**: Set `deleted = true` instead of hard delete for products with history
+- **Security**: Get username from `SecurityContextHolder.getContext().authentication.name`
+- **Audit Trail**: Auto-populate `createdBy` and use `ZonedDateTime` for timestamps
+- **Validation**: Use `@Valid` in controllers, handle errors in `@ControllerAdvice`
+- **Controllers**: Use `@Controller` (not `@RestController`), return view names, `RedirectAttributes` for flash messages
+- **Error Handling**: User-friendly messages, appropriate HTTP status codes, SLF4J logging
+
+#### Database
+- Environment variables for credentials (never hardcode)
+- `spring.jpa.hibernate.ddl-auto=update` for dev, Flyway/Liquibase for prod
+- Indexes on foreign keys and frequently queried columns
+- CHECK constraints for data integrity
+
+#### Testing
+- JUnit 5 with Spring Boot Test
+- `@WebMvcTest` for controllers, `@DataJpaTest` for repositories
+- `@WithMockUser` for secured endpoints
+- PostgreSQL test database (GitHub Actions services)
+
+#### Low Stock Alert (Primary Business Function)
+- Threshold-based filtering in service layer
+- CSV export with timestamp in filename
+- Proper Content-Type and Content-Disposition headers
+- User-configurable threshold (not hardcoded)

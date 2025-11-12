@@ -1,0 +1,69 @@
+---
+description: Frontend rules for Inventory Management System
+globs:
+  - src/main/resources/templates/**/*.html
+  - src/main/resources/static/**/*
+alwaysApply: false
+---
+
+## Frontend
+
+### General Guidelines
+
+- Use Thymeleaf templates (.html) for server-side rendering
+- Leverage Thymeleaf fragments for reusable components (nav, links, scripts)
+- Keep JavaScript minimal - Bootstrap JS only for interactive components
+- Follow progressive enhancement - ensure core functionality works without JS
+
+### Thymeleaf Best Practices
+
+- Use `th:replace="~{fragments/nav :: nav}"` for including fragments
+- Use `th:field` for automatic form field binding (generates id, name, value)
+- Use `th:errors` for displaying validation errors inline
+- Use `th:if`/`th:unless` for conditional rendering, `th:each` for loops
+- Use `th:text` for safe output (auto-escapes HTML)
+- Use `th:href="@{/path}"` for URL generation with context path
+- CSRF tokens automatically included by Thymeleaf Security
+- Use `sec:authorize="isAuthenticated()"` for conditional auth-based rendering
+
+### Bootstrap 5 Styling
+
+- Use Bootstrap grid (container, row, col-*) for responsive layouts
+- Apply utility classes for spacing (mb-3, mt-4, py-3, gap-2)
+- Leverage semantic colors (btn-primary, btn-success, btn-danger, alert-success)
+- Use Bootstrap components (cards, tables, forms, alerts, badges)
+- Apply responsive utilities (d-none, d-md-block) for mobile-first design
+- Use Flexbox utilities (d-flex, justify-content-between, align-items-center)
+- Minimize custom CSS - prefer Bootstrap utilities
+
+### Forms
+
+- Display validation errors inline with `th:errors` next to fields
+- Return to form view (not redirect) when validation fails
+- Always use `<label>` with `for` attribute matching input `id`
+- Apply `required` attribute for mandatory fields
+- Set `autofocus` on first field for keyboard navigation
+- Use forms (POST) for DELETE operations to include CSRF protection
+
+### Tables
+
+- Use `table-striped` and `table-hover` for better UX
+- Use `table-responsive` wrapper for mobile horizontal scrolling
+- Display "No data" messages with `th:if="${#lists.isEmpty()}"`
+- Use `btn-sm` for table action buttons with semantic colors
+- Use badge components for status indicators
+
+### Accessibility
+
+- Use semantic HTML5 elements (header, nav, main, section)
+- Apply heading hierarchy (h1 → h2 → h3) correctly
+- Use `<button>` for actions, `<a>` for navigation
+- Use `aria-label` for icon-only buttons
+- Ensure all interactive elements are keyboard accessible
+- Use Bootstrap's semantic color system for sufficient contrast
+
+### User Feedback
+
+- Use Bootstrap alerts (alert-success, alert-danger) for flash messages
+- Implement dismissible alerts with close button (alert-dismissible)
+- Display flash messages from RedirectAttributes after POST operations

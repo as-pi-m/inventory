@@ -1,0 +1,100 @@
+---
+description: Shared rules for Inventory Management System
+globs:
+alwaysApply: true
+---
+
+# AI Rules for Inventory Management System
+
+Inventory Management System is a web application that enables warehouse operations management for small to medium-sized organizations. The aim of the project is to provide a lightweight, secure solution for tracking products, managing stock levels, and **generating low stock alerts** - the primary business functionality that helps prevent stockouts through automated reporting.
+
+## Tech Stack
+
+- Spring Boot 3.5.7 (Kotlin)
+- Thymeleaf (Server-Side Rendering)
+- PostgreSQL
+- Spring Security
+- Bootstrap 5
+- Gradle 8.14.3
+
+## Project Structure
+
+When introducing changes to the project, always follow the directory structure below:
+
+- `./src/main/kotlin/ai/brave/inventory` - Kotlin source code
+  - `./InventoryApplication.kt` - Spring Boot main application
+  - `./domain/` - Domain-driven design packages (product, arrival, correction, alert, history)
+    - `./product/` - Product management (model, service, repository, controller, dto)
+    - `./arrival/` - Stock arrivals tracking
+    - `./correction/` - Stock corrections with mandatory reason
+    - `./alert/` - Low stock alert reports (primary business function)
+    - `./history/` - Combined history view for products
+  - `./security/` - Authentication and authorization (config, model, service, repository, controller)
+  - `./exception/` - Global exception handling with ControllerAdvice
+  - `./health/` - Health check endpoint for monitoring
+
+- `./src/main/resources` - Application resources
+  - `./templates/` - Thymeleaf HTML templates
+    - `./layout.html` - Main layout template
+    - `./fragments/` - Reusable fragments (nav, links, scripts)
+    - `./product/`, `./arrival/`, `./correction/`, `./alert/`, `./auth/`, `./history/`, `./error/` - Domain views
+  - `./static/` - Static assets (favicon.svg, favicon.ico)
+  - `./application.properties` - Application configuration
+  - `./banner.txt` - Spring Boot startup banner
+
+- `./src/test/kotlin/ai/brave/inventory` - Test source code
+  - Mirror structure of main source with `*Test.kt` files
+
+- `./build.gradle.kts` - Gradle build configuration
+- `./.github/workflows/ci-cd.yml` - CI/CD pipeline (test, build, deploy)
+
+When modifying the directory structure, always update this section.
+
+## Coding Practices
+
+### Guidelines for Clean Code
+
+- Use feedback from IntelliJ IDEA and Kotlin compiler to improve the code when making changes.
+- Prioritize error handling and edge cases.
+- Handle errors and edge cases at the beginning of functions.
+- Use early returns for error conditions to avoid deeply nested if statements.
+- Place the happy path last in the function for improved readability.
+- Avoid unnecessary else statements; use if-return pattern or when expressions instead.
+- Use Kotlin's null safety features (`?.`, `?:`, `!!`) appropriately.
+- Implement proper error logging using SLF4J logger with appropriate severity levels.
+- Return user-friendly error messages without exposing technical details.
+
+### Kotlin-Specific Practices
+
+- Prefer `val` over `var` for immutability.
+- Use data classes for entities and DTOs.
+- Leverage Kotlin's type inference where it improves readability.
+- Use named parameters for functions with multiple parameters.
+- Use default parameter values instead of function overloading.
+- Prefer expression body functions for simple single-expression functions.
+- Use `when` expressions instead of complex if-else chains.
+
+### Business Rules (Critical)
+
+- **Product Quantity**: Never modify the `quantity` field directly on Product entity - only through ProductArrival or StockCorrection operations.
+- **Soft Delete**: Products are never hard-deleted - set `deleted = true` to maintain referential integrity with historical records.
+- **Audit Trail**: Always record `createdBy` (username from SecurityContextHolder) and timestamps (`ZonedDateTime`) for all inventory operations.
+- **Stock Corrections**: Reason field is mandatory (max 500 chars) for compliance and audit purposes.
+- **Low Stock Alerts**: Threshold must be user-configurable, not hardcoded. CSV export includes timestamp in filename.
+
+### Security Practices
+
+- All endpoints except `/login`, `/error`, `/health`, and static resources require authentication.
+- Use `SecurityContextHolder.getContext().authentication.name` to get the current username.
+- CSRF protection is enabled - all forms must include CSRF token (automatic with Thymeleaf).
+- Passwords are hashed with BCrypt - never store plain text passwords.
+- Use environment variables for database credentials and sensitive configuration.
+
+### Testing Practices
+
+- Write tests for all controllers using `@WebMvcTest` and MockMvc.
+- Use `@WithMockUser` to test secured endpoints.
+- Test validation scenarios with both valid and invalid inputs.
+- Use PostgreSQL test database (via GitHub Actions services) for integration tests.
+- Mock service dependencies in controller tests.
+- Test both success and error paths.
